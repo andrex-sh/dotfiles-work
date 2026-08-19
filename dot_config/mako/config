@@ -1,0 +1,19 @@
+# Palette matches dot_config/waybar/style.css (Catppuccin Mocha-ish).
+layer=overlay
+anchor=top-right
+width=350
+height=110
+margin=10
+padding=10
+border-size=2
+border-radius=8
+default-timeout=10000
+font=JetBrainsMono Nerd Font 10
+
+background-color=#1e1e2ecc
+text-color=#cdd6f4
+border-color=#45475a
+
+[urgency=high]
+border-color=#f38ba8
+default-timeout=0
