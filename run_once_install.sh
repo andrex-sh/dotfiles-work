@@ -15,8 +15,8 @@ set -eu
 
 sudo apt update
 sudo apt install -y \
-    sway waybar mako swaylock swaybg foot fuzzel kanshi \
-    power-profiles-daemon xwayland lxqt-policykit nm-connection-editor \
+    sway waybar mako-notifier swaylock swaybg foot fuzzel kanshi \
+    power-profiles-daemon xwayland lxqt-policykit \
     network-manager-gnome bluez blueman \
     playerctl brightnessctl grim slurp wl-clipboard pavucontrol \
     gvfs totem loupe libreoffice pipewire \

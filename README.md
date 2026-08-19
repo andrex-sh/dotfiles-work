@@ -16,7 +16,7 @@ Brave has no apt package - installed from Brave's own apt repo (`brave-browser`)
 
 The hardware status script reports CPU and memory only - this machine has no discrete GPU, so no GPU usage/temp code exists here (unlike the CachyOS repo's version).
 
-Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-applet` (both `exec`'d in `sway/config`, shown via waybar's `tray` module) - same as the CachyOS setup. `nm-connection-editor` is tracked too, for importing a VPN profile: `nmcli connection import type openvpn file foo.ovpn` or `nm-connection-editor`. No VPN profile is pre-configured.
+Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-applet` (both `exec`'d in `sway/config`, shown via waybar's `tray` module) - same as the CachyOS setup. `nm-connection-editor` (ships inside the `network-manager-gnome` package) is there too, for importing a VPN profile: `nmcli connection import type openvpn file foo.ovpn` or `nm-connection-editor`. No VPN profile is pre-configured.
 
 ## Not tracked
 
@@ -30,12 +30,12 @@ Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-ap
 curl -fsSL https://raw.githubusercontent.com/andrex-sh/dotfiles-work/main/bootstrap.sh | sh
 ```
 
-`bootstrap.sh` clones this repo to `~/projects/dotfiles-work`, installs chezmoi, and runs `chezmoi init --apply` - equivalent to running these by hand:
+`bootstrap.sh` clones this repo to `~/Projects/dotfiles-work`, installs chezmoi, and runs `chezmoi init --apply` - equivalent to running these by hand:
 
 ```sh
-git clone https://github.com/andrex-sh/dotfiles-work.git ~/projects/dotfiles-work
+git clone https://github.com/andrex-sh/dotfiles-work.git ~/Projects/dotfiles-work
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-~/.local/bin/chezmoi init --source ~/projects/dotfiles-work --apply
+~/.local/bin/chezmoi init --source ~/Projects/dotfiles-work --apply
 ```
 
 First `apply` runs `run_once_install.sh`: installs packages via apt, adds Brave's apt repo, installs the JetBrains Mono Nerd Font manually (not apt-packaged), enables `bluetooth.service`/`kanshi.service`. Answer the sudo prompt, then log out and pick "Sway" from GDM's session menu.
