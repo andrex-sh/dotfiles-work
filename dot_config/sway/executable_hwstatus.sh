@@ -6,9 +6,9 @@
 # these show as tofu boxes instead of icons.
 set -eu
 
-cpu_icon=''   # nf-fa-microchip U+F2DB
-mem_icon=''   # nf-fa-memory U+EFC5
-temp_icon=''  # nf-fa-thermometer_half U+F2C9
+cpu_icon=''   # nf-fa-microchip U+F2DB
+mem_icon=''   # nf-fa-memory U+EFC5
+temp_icon=''  # nf-fa-thermometer_half U+F2C9
 
 # --- CPU usage: delta against the previous run's /proc/stat snapshot,
 # same technique waybar's own (now-removed) cpu module used internally ---
@@ -28,12 +28,18 @@ if [ -f "$stat_file" ]; then
 fi
 printf '%s %s\n' "$idle" "$total" > "$stat_file"
 
-# --- CPU temp: k10temp, PCI 0000:00:18.3 (stable across reboots, unlike
-# the hwmonN number it happens to register under) ---
+# --- CPU temp: matched by hwmon driver name (coretemp on Intel, k10temp on
+# AMD) instead of a fixed PCI path or hwmonN number - the path is per-machine
+# and the number renumbers across reboots. temp1_input is the package/Tctl
+# reading on either driver. ---
 cpu_temp="?"
-for f in /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon*/temp1_input; do
-    if [ -r "$f" ]; then
-        cpu_temp="$(($(cat "$f") / 1000))"
+for d in /sys/class/hwmon/hwmon*; do
+    case "$(cat "$d/name" 2>/dev/null)" in
+        coretemp | k10temp) ;;
+        *) continue ;;
+    esac
+    if [ -r "$d/temp1_input" ]; then
+        cpu_temp="$(($(cat "$d/temp1_input") / 1000))"
         break
     fi
 done

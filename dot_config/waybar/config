@@ -1,5 +1,5 @@
 // waybar - sway laptop (replaces the old i3status bar); hardware block uses
-// Nerd Font icons, everything else stays plain text
+// Nerd Font icons; volume and power do too, everything else stays plain text
 {
     "layer": "top",
     "position": "top",
@@ -28,11 +28,11 @@
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
-        "format-muted": " {volume}%",
+        "format-muted": " {volume}%",  // nf-fa-volume_off U+F026
         "format-icons": {
             "default": [
-                "",
-                ""
+                "",  // nf-fa-volume_down U+F027
+                ""   // nf-fa-volume_up U+F028
             ]
         },
         "on-click-right": "$HOME/.config/sway/pavucontrol-toggle.sh"
@@ -48,7 +48,7 @@
         "spacing": 8
     },
     "custom/power": {
-        "format": "",
+        "format": "",  // nf-fa-power_off U+F011
         "tooltip": false,
         "on-click": "$HOME/.config/sway/powermenu.sh"
     }
