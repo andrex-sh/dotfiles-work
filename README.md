@@ -20,7 +20,7 @@ Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-ap
 
 ## Not tracked
 
-- `~/.config/kanshi/config` - monitor layout is per-machine, write it by hand (see `man kanshi` and `dot_config/kanshi/executable_docked-workspaces.sh`).
+- `~/.config/kanshi/config` - monitor layout is per-machine, write it by hand (see `man kanshi` and `dot_config/kanshi/executable_docked-workspaces.sh`). Each profile needs `exec pkill waybar; exec waybar` too, or waybar keeps the pre-kanshi layout at login.
 - fish config - machine-local.
 - `~/.gitconfig` and `~/.ssh/config` - kept out of the repo entirely (identity/host details), set up by hand per machine.
 

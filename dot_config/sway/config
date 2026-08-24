@@ -23,6 +23,13 @@ for_window [window_type="utility"] floating enable
 
 exec sh -c 'systemctl --user set-environment XDG_CURRENT_DESKTOP=sway; dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway'
 
+# kanshi.service is boot-scoped, not session-scoped (graphical-session.target
+# doesn't reliably activate on logout/login) - a same-session relogin never
+# restarts it on its own. Restart it here so every sway startup gets a fresh
+# kanshi run, which re-applies outputs and restarts waybar itself (see
+# ~/.config/kanshi/config, local-only).
+exec systemctl --user restart kanshi.service
+
 exec lxqt-policykit-agent
 exec mako
 exec nm-applet
@@ -81,7 +88,7 @@ bindswitch --reload --locked lid:off output eDP-1 enable
     # $mod+right-click resizes. Swap to `inverse` to flip which button does what.
     floating_modifier $mod normal
 
-    bindsym $mod+Shift+c reload; exec systemctl --user restart kanshi.service; exec sh -c 'pkill waybar; exec waybar'
+    bindsym $mod+Shift+c reload; exec systemctl --user restart kanshi.service
 
     bindsym $mod+Shift+e exec $HOME/.config/sway/powermenu.sh
 
