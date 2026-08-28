@@ -30,6 +30,7 @@ window#waybar {
 #language,
 #custom-hardware,
 #pulseaudio,
+#custom-notification,
 #clock,
 #tray,
 #custom-power {
@@ -40,6 +41,7 @@ window#waybar {
 #language:hover,
 #custom-hardware:hover,
 #pulseaudio:hover,
+#custom-notification:hover,
 #clock:hover,
 #tray:hover,
 #custom-power:hover {
@@ -50,6 +52,7 @@ window#waybar {
 #language,
 #custom-hardware,
 #pulseaudio,
+#custom-notification,
 #clock,
 #tray {
     border-left: 1px solid #45475a;

@@ -1,28 +1,22 @@
 #!/bin/sh
-# One-time system setup for a fresh Ubuntu 24.04 machine: packages, Brave's
-# apt repo, a manually-installed Nerd Font (not apt-packaged), bluetooth, and
-# kanshi's service (the kanshi package ships no unit of its own - the one
-# tracked at dot_config/systemd/user/kanshi.service is hand-authored).
-# No display-manager setup here: GDM is Ubuntu's default and already
-# installed - sway is just selected as the session at the login screen.
-# Re-runs if this file's content changes (chezmoi hashes it).
-#
-# File manager is Nautilus, video/audio is Totem, images are Loupe - reusing
-# GNOME's own apps (they run standalone under sway, no gnome-shell needed)
-# instead of Thunar/mpv/qimgv. No discrete GPU on this machine, so no
-# rocm-smi-lib and no GPU usage/temp reporting anywhere.
+# Fresh Ubuntu 24.04 setup. Re-runs when this file changes (chezmoi hashes it).
+# Display manager is GDM, already installed - pick Sway at the login screen.
 set -eu
 
 sudo apt update
 sudo apt install -y \
-    sway waybar mako-notifier swaylock swaybg foot fuzzel kanshi \
+    sway waybar sway-notification-center swaylock swaybg foot fuzzel kanshi \
     power-profiles-daemon xwayland lxqt-policykit \
     network-manager-gnome bluez blueman \
     playerctl brightnessctl grim slurp wl-clipboard pavucontrol \
     gvfs totem loupe libreoffice pipewire \
     xdg-desktop-portal xdg-desktop-portal-wlr gsimplecal libglib2.0-bin
 
-# Brave: no apt package on Ubuntu, install from Brave's own repo.
+# mako claims the same D-Bus name as swaync; with both installed, which one
+# starts is a coin flip.
+sudo apt purge -y mako-notifier || true
+
+# Brave: no apt package, use Brave's own repo.
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
     https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" \
@@ -30,7 +24,7 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 sudo apt update
 sudo apt install -y brave-browser
 
-# JetBrains Mono Nerd Font: no apt package, install manually.
+# JetBrains Mono Nerd Font: no apt package.
 font_dir="$HOME/.local/share/fonts"
 if [ ! -d "$font_dir/JetBrainsMonoNerdFont" ]; then
     tmp="$(mktemp -d)"

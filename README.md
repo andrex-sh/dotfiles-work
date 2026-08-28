@@ -4,11 +4,13 @@
 
 ## Tracked
 
-sway, waybar, mako, swaylock, foot, fuzzel, the sway power-menu/screenshot/hwstatus scripts, kanshi's workspace-assignment helper + service, and nvim.
+sway, waybar, swaync, swaylock, foot, fuzzel, the sway power-menu/screenshot/hwstatus scripts, kanshi's workspace-assignment helper + service, and nvim.
 
 Display manager is GDM (Ubuntu's default, already installed) - sway is just selected as the session at the login screen. No ly here.
 
-Notifications are handled by mako - popup-only, no history/control-center panel; `$mod+n` (`makoctl restore`) re-shows the last dismissed notification, the closest equivalent.
+Notifications are [swaync](https://github.com/ErikReider/SwayNotificationCenter) (apt: `sway-notification-center`) - `$mod+n` or the waybar bell toggles the panel, right-click toggles DND. Nothing `exec`s it; it's D-Bus-activated, and a second launcher makes it crash-loop. mako is *purged* by `run_once_install.sh` - it claims the same D-Bus name.
+
+Ubuntu ships swaync 0.9.0, older than the CachyOS side, so `swaync/config.json` drops five keys its schema lacks (`ignore-gtk-theme`, `layer-shell-cover-screen`, `relative-timestamps`, `notification-grouping`, `text-empty`).
 
 File manager, video/audio, and images are Nautilus, Totem, and Loupe - reused GNOME apps rather than Thunar/mpv/qimgv, since none of those (or their AUR equivalents) are simple apt installs, and these GTK apps run fine standalone under sway without gnome-shell running.
 

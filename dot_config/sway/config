@@ -13,50 +13,33 @@ for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, resize set wid
 for_window [app_id="foot-btop"] floating enable, resize set width 80 ppt height 80 ppt, move position center
 for_window [app_id="gsimplecal"] floating enable, move position cursor
 
-# Steam/Godot-style child windows (settings, dialogs, tool panels) tile
-# instead of floating by default - these apps run under XWayland and mark
-# such windows via the X11 _NET_WM_WINDOW_TYPE hint, which sway can match on
-# directly. Global, not per-app: this is the same class of issue everywhere,
-# not something specific to one application.
+# XWayland dialogs/tool panels would otherwise tile.
 for_window [window_type="dialog"] floating enable
 for_window [window_type="utility"] floating enable
 
 exec sh -c 'systemctl --user set-environment XDG_CURRENT_DESKTOP=sway; dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway'
 
-# kanshi.service is boot-scoped, not session-scoped (graphical-session.target
-# doesn't reliably activate on logout/login) - a same-session relogin never
-# restarts it on its own. Restart it here so every sway startup gets a fresh
-# kanshi run, which re-applies outputs and restarts waybar itself (see
-# ~/.config/kanshi/config, local-only).
+# kanshi.service is boot-scoped, so a relogin never restarts it on its own.
 exec systemctl --user restart kanshi.service
 
 exec lxqt-policykit-agent
-exec mako
 exec nm-applet
 exec blueman-applet
-# Status bar (replaces sway's native `bar {}`); nm-applet/blueman-applet show
-# via its tray module.
+# No `exec swaync` - waybar's notification module D-Bus-activates it, and two
+# launchers make it crash-loop.
 exec waybar
 
 output * bg #1e1e2e solid_color
-# Don't add output mode/position/transform directives here - kanshi
-# (~/.config/kanshi/config, local-only) owns that. `reload` re-applies this
-# whole file, so a competing directive here would fight kanshi on every
-# plain `swaymsg reload` that doesn't also restart kanshi.service.
+# No output mode/position/transform here - kanshi owns that, and `reload`
+# would fight it.
 
 ### Lid switch
-# --reload re-evaluates the current lid state on `swaymsg reload`, and
-# --locked keeps it firing while swaylock is active, so closing the lid on a
-# manually locked session still powers the panel down.
+# --locked so the lid still works on a locked session.
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
 ### Idle configuration
-# Deliberately none: no swayidle, so the session never blanks the displays or
-# locks itself, and you only authenticate once when the session starts. Locking
-# is manual only, via the waybar power button (powermenu.sh). Adding a swayidle
-# `before-sleep 'swaylock -f'` line here would undo that by demanding a password
-# on every resume from suspend.
+# Deliberately no swayidle - locking is manual, via powermenu.sh.
 
     input type:touchpad {
     dwt enabled
@@ -84,17 +67,14 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
     bindsym $mod+d exec $menu
 
-    # $mod+drag moves windows (works even when tiled, despite the name);
-    # $mod+right-click resizes. Swap to `inverse` to flip which button does what.
+    # $mod+drag moves, $mod+right-click resizes.
     floating_modifier $mod normal
 
     bindsym $mod+Shift+c reload; exec systemctl --user restart kanshi.service
 
     bindsym $mod+Shift+e exec $HOME/.config/sway/powermenu.sh
 
-    # mako has no control-center to toggle - closest equivalent is
-    # re-showing the last dismissed notification.
-    bindsym $mod+n exec makoctl restore
+    bindsym $mod+n exec swaync-client -t -sw
 
     # Moving around:
     bindsym $mod+$left focus left
