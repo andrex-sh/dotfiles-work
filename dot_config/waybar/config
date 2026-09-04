@@ -13,6 +13,7 @@
     "modules-right": [
         "sway/language",
         "custom/hardware",
+        "battery",
         "pulseaudio",
         "custom/notification",
         "tray"
@@ -26,6 +27,22 @@
         "return-type": "json",
         "interval": 3,
         "on-click": "foot --app-id=foot-btop -e btop"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",  // nf-fa-bolt U+F0E7
+        "format-icons": [
+            "",  // nf-fa-battery_empty U+F244
+            "",  // nf-fa-battery_quarter U+F243
+            "",  // nf-fa-battery_half U+F242
+            "",  // nf-fa-battery_three_quarters U+F241
+            ""   // nf-fa-battery_full U+F240
+        ],
+        "tooltip-format": "{timeTo} ({power}W)"
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",

@@ -29,6 +29,7 @@ window#waybar {
 
 #language,
 #custom-hardware,
+#battery,
 #pulseaudio,
 #custom-notification,
 #clock,
@@ -40,6 +41,7 @@ window#waybar {
 
 #language:hover,
 #custom-hardware:hover,
+#battery:hover,
 #pulseaudio:hover,
 #custom-notification:hover,
 #clock:hover,
@@ -51,6 +53,7 @@ window#waybar {
 #workspaces,
 #language,
 #custom-hardware,
+#battery,
 #pulseaudio,
 #custom-notification,
 #clock,
@@ -67,6 +70,14 @@ window#waybar {
 }
 
 #custom-hardware.critical {
+    color: #f38ba8;
+}
+
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
     color: #f38ba8;
 }
 
