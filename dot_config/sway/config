@@ -9,7 +9,9 @@ set $term foot
 set $menu fuzzel
 set $filemanager nautilus
 
-for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, resize set width 750 height 450, move position cursor
+# Ubuntu's pavucontrol build still uses the bare app_id; newer builds use the
+# reverse-DNS one. Match either.
+for_window [app_id="^(org\.pulseaudio\.)?pavucontrol$"] floating enable, resize set width 750 height 450, move position cursor
 for_window [app_id="foot-btop"] floating enable, resize set width 80 ppt height 80 ppt, move position center
 for_window [app_id="gsimplecal"] floating enable, move position cursor
 
