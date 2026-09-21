@@ -22,7 +22,7 @@ Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-ap
 
 ## Not tracked
 
-- `~/.config/kanshi/config` - monitor layout is per-machine, write it by hand (see `man kanshi` and `dot_config/kanshi/executable_docked-workspaces.sh`). Each profile needs `exec pkill waybar; exec waybar` too, or waybar keeps the pre-kanshi layout at login.
+- `~/.config/kanshi/config` - monitor layout is per-machine, write it by hand. Start from `dot_config/kanshi/config.example`, which `apply` drops next to it as `~/.config/kanshi/config.example` (see also `man 5 kanshi` and `dot_config/kanshi/executable_docked-workspaces.sh`). Each profile needs `pkill waybar; exec waybar` chained onto its `exec` line too, or waybar keeps the pre-kanshi layout at login.
 - fish config - machine-local.
 - `~/.gitconfig` and `~/.ssh/config` - kept out of the repo entirely (identity/host details), set up by hand per machine.
 
@@ -42,7 +42,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 
 First `apply` runs `run_once_install.sh`: installs packages via apt, adds Brave's apt repo, installs the JetBrains Mono Nerd Font manually (not apt-packaged), enables `bluetooth.service`/`kanshi.service`. Answer the sudo prompt, then log out and pick "Sway" from GDM's session menu.
 
-Then hand-write `~/.config/kanshi/config` for that machine.
+Then hand-write `~/.config/kanshi/config` for that machine - `cp ~/.config/kanshi/config.example ~/.config/kanshi/config` and edit.
 
 ## Daily workflow
 

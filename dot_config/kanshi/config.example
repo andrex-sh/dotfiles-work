@@ -1,0 +1,29 @@
+# Example kanshi config
+#
+# Each chain ends by restarting waybar because kanshi's start races sway's own
+# `exec waybar`; without it waybar keeps the pre-kanshi layout until restarted.
+#
+# docked-workspaces.sh takes the primary display only. Every other active
+# output gets one workspace off the top, counting down from 10, so the
+# last-enumerated display always ends up with workspace 10.
+
+profile docked {
+    output "Primary Output" enable mode 3440x1440@59.973Hz position 0,0
+    output "Secondary Output" enable transform 270 position -1080,0
+    output eDP-1 enable mode 1920x1200@60.001Hz position 3440,340
+
+    exec $HOME/.config/kanshi/docked-workspaces.sh "Primary Output"; pkill waybar; exec waybar
+}
+
+profile external-only {
+    output "Primary Output" enable position 0,0
+    output eDP-1 disable
+
+    exec $HOME/.config/kanshi/docked-workspaces.sh "Primary Output"; pkill waybar; exec waybar
+}
+
+profile laptop {
+    output eDP-1 enable position 0,0
+
+    exec $HOME/.config/kanshi/docked-workspaces.sh eDP-1; pkill waybar; exec waybar
+}
