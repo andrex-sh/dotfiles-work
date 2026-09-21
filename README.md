@@ -4,7 +4,7 @@
 
 ## Tracked
 
-sway, waybar, swaync, swaylock, foot, fuzzel, the sway power-menu/screenshot/hwstatus scripts, kanshi's workspace-assignment helper + service, and nvim.
+sway, waybar, swaync, swaylock, foot, fuzzel, the sway power-menu/screenshot/hwstatus scripts, kanshi's workspace-assignment helper + service, nvim, and the QMK/Vial udev rules.
 
 Display manager is GDM (Ubuntu's default, already installed) - sway is just selected as the session at the login screen. No ly here.
 
@@ -19,6 +19,10 @@ Brave has no apt package - installed from Brave's own apt repo (`brave-browser`)
 The hardware status script reports CPU and memory only - this machine has no discrete GPU, so no GPU usage/temp code exists here (unlike the CachyOS repo's version).
 
 Wifi/VPN and bluetooth are handled by tray applets - `nm-applet` and `blueman-applet` (both `exec`'d in `sway/config`, shown via waybar's `tray` module) - same as the CachyOS setup. `nm-connection-editor` (ships inside the `network-manager-gnome` package) is there too, for importing a VPN profile: `nmcli connection import type openvpn file foo.ovpn` or `nm-connection-editor`. No VPN profile is pre-configured.
+
+### Keyboard (QMK/Vial)
+
+`run_onchange_install-udev-rules.sh` writes `/etc/udev/rules.d/50-qmk.rules` and `99-vial.rules`, then reloads udev. They live in `/etc`, not `$HOME`, so chezmoi can't track them as files - the script writes them with `sudo tee`. Note the QMK rule is the broad one: `uaccess` on all of `hidraw`, not just the keyboard.
 
 ## Not tracked
 
@@ -40,7 +44,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 ~/.local/bin/chezmoi init --source ~/Projects/dotfiles-work --apply
 ```
 
-First `apply` runs `run_once_install.sh`: installs packages via apt, adds Brave's apt repo, installs the JetBrains Mono Nerd Font manually (not apt-packaged), enables `bluetooth.service`/`kanshi.service`. Answer the sudo prompt, then log out and pick "Sway" from GDM's session menu.
+First `apply` runs `run_once_install.sh`: installs packages via apt, adds Brave's apt repo, installs the JetBrains Mono Nerd Font manually (not apt-packaged), enables `bluetooth.service`/`kanshi.service`. `run_onchange_install-udev-rules.sh` runs too, for the keyboard rules. Answer the sudo prompts, then log out and pick "Sway" from GDM's session menu.
 
 Then hand-write `~/.config/kanshi/config` for that machine - `cp ~/.config/kanshi/config.example ~/.config/kanshi/config` and edit.
 
